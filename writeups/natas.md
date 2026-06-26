@@ -21,9 +21,11 @@ This note is based on the study notes from [Writeups by MayADevBe](https://mayad
 
 ---
 # Writeups
+
 ## Natas4
 ![](images/natas4-1.png)
 ![](images/natas4-2.png)
+
 Có vẻ là server check "" từ header `Referer`, nên ta có thể (1) dùng `curl` để gửi request với header này. Hoặc (2) đổi `Referer` trong `Developer Tools` của trình duyệt firefox. Hoặc (3) đổi `Referer` trong `Burp Suite`.
 
 ```bash
@@ -33,26 +35,32 @@ curl "http://natas4.natas.labs.overthewire.org/" --compressed -H "Referer: http:
 - `-H "headername: headervalue"`
 - `--compressed` để nén request, tránh bị lỗi 414 Request-URI Too Long.
 
+---
 ## Natas5
 ![](images/natas5-1.png)
+
 --> thử đổi thành 1 xem sao
+
 ![](images/natas5-2.png)
 
-
+---
 ## Natas6
 ![](images/natas6-2.png)
+
 - `<input type=submit name=submit>` là nút submit
 - `<input name=secret>` không ghi type thì HTML sẽ hiểu là text --> đây là chỗ nhập input cho biến secret
 
 ![](images/natas6-1.png)
+
 - Ở đây trong <? ?> là đoạn mã PHP, ở đây có thể thấy POST request sẽ được check với biến `submit`, nếu tồn tại thì nó sẽ đem ``$_POST[`secret`]`` đi so với biến tên là `$secret`.
 - Nhưng trong đoạn mã ko có chỗ chứa ***uninitialized/ initialized variable*** nhưng lại có `include "include/secret.inc"` --> khả năng là định nghĩa biến secret ở đây.
 - Truy cập `/include/secret.inc`--> thấy biến secret --> nhập vào input --> ra password level tiếp theo
 
+---
 ## Natas8
 ![](images/natas8-1.png)
 - Nhìn cũng đoán đoán được là, lần này đem biến `secret` đi so nhưng, trước khi so thì nó đi vào hàm `encodeSecret`
-- Nên sẽ giải từ "3d3d516343746d4d6d6c315669563362" để xem `$secret` là gì
+- Nên sẽ giải từ `"$encodedSecret"` để xem `$secret` là gì
 
 ```bash
 echo "3d3d516343746d4d6d6c315669563362" \
