@@ -1,6 +1,4 @@
 # Natas Notes 
-This note is based on the study notes from [Writeups by MayADevBe](https://mayadevbe.me/posts/overthewire/natas)
-
 **Objective**: Learn web security concepts and practice with the Natas wargame.
 
 ## Passwords
@@ -77,7 +75,7 @@ echo "3d3d516343746d4d6d6c315669563362" \
 
 
 ---
-# Theory
+# Theory - based on [Writeups by MayADevBe](https://mayadevbe.me/posts/overthewire/natas)
 ## Natas 0, 1 - Web Basics
 1. Mỗi website được rendered bởi web browser dựa trên HTML, CSS, JavaScript code được yêu cầu từ server. *Tức là browser gửi HTTP request, server trả về HTML response, browser hiển thị nội dung*. Có thể xem được source bằng 3 cách cơ bản sau:
 - Using a command line tool for web requests (such as `curl` or `wget`)
@@ -94,7 +92,8 @@ Thông thường, một trang web được cấu hình tốt sẽ cho phép truy
 2. Một trang web không chỉ bao gồm một tệp HTML duy nhất. Các trang web hiện đại thường được thiết lập với các tệp HTML, CSS và JS. Thêm vào đó, một máy chủ web có thể lưu trữ các loại tệp khác, chúng có thể được nhúng vào trang web hoặc có thể truy cập độc lập thông qua đường dẫn chính xác. Nếu tệp tin đó được lưu trữ trên cùng một máy chủ, đường dẫn của nó thường sẽ là đường dẫn tương đối và không chứa phần domain chính của URL (ví dụ: /posts/images/vmbox_setup_wizard_error.png).
 
 ## Natas 3 - Hidden Files (robots.txt)
-1. Internet ngày nay được [indexed](/concepts/crawling-indexing.md) bởi [search-engine crawlers](/concepts/crawling-indexing.md), do đó Google and Co (các đối tác) biết các content tồn tại trên Internet để improve search engine results. *robots.txt* file tồn tại trên các servers để nói với những *crawlers* này và các web bots khác, nhưng phần nào của websites có thể đi vào. Nó cho phép xác định [user-agent]() aka ***quy tắc này nên dành cho con bot cụ thể nào***, và trang nào của website mà user-agent không được phép truy cập ([Example](https://developers.google.com/search/docs/crawling-indexing/robots/create-robots-txt))
+
+1. Internet ngày nay được [indexed](/concepts/crawling-indexing.md) bởi [search-engine crawlers](/concepts/crawling-indexing.md), do đó Google and Co (các đối tác) biết các content tồn tại trên Internet để improve search engine results. *robots.txt* file tồn tại trên các servers để nói với những *crawlers* này và các web bots khác, những phần nào của websites có thể đi vào. Nó cho phép xác định [user-agent]() aka ***quy tắc này nên dành cho con bot cụ thể nào***, và trang nào của website mà user-agent không được phép truy cập ([Example](https://developers.google.com/search/docs/crawling-indexing/robots/create-robots-txt))
 
 ```
 1 User-agent: Googlebot
@@ -113,7 +112,28 @@ It is important to be aware that the **‘robots.txt’** file does **NOT serve 
 2. Read more about this file in the (Google Developer Docs)[https://developers.google.com/search/docs/crawling-indexing/robots/create-robots-txt].
 
 ## Natas 4
+1. Giao tiếp giữa ***client-server*** là được thực hiện bằng ***request-response***. Ta gửi request đến 1 page và server response with contents. Thông thường nó sẽ follow các protocols và structures khác nhau, phụ thuộc vào service. Trong trường hợp này là HTTP request.
+
+2. HTTP Request thường bao gồm:
+    - method: GET, POST, ...
+    - the requested URL
+    - protocol version
+    - ***request headers***: gồm nhiều trường thông tin, nhưng có vài trường phổ biến và xuất hiện trong chall này như `Authorization` chứa credential cho trang web, `Referer` là URL/trang web nơi request được gửi đi. Thông thường browser sẽ handle những việc này, nhưng ta vẫn có thể thay đổi nếu muốn.
+3. Tham khảo thêm về [HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)
 
 ## Natas 5 
+1. **HTTP-Cookies**: HTTP là giao thức *stateless* tức là không lưu info về session cũ hoặc là request trước ở phía server.Client/browser sẽ lưu session state và gửi cùng request mới. Với HTTP thì thông tin về session được lưu ở cookies, cho phép giao thức stateless này lưu vào trao đổi thông tin hữu ích.
+
+2. Cookies được gửi với HTTP Headers. Có nhiều loại cookies.  Ví dụ: 
+    - authentication cookies (for login) or tracking cookies. 
+    - Bởi vì lưu ở client side, nên client có thể thay đổi nó. Nhưng nó có thể là plain text, encoded, hashed or a special value only the server knows how to process. Nên ko phải lúc nào cũng biết cách thay đổi
 
 ## Natas 6 
+1. ***PHP*** là scripting language, thường xử lý ở server side và ko hiển thị cho user.
+
+2. Trong khi code `HTML` muốn chèn mã PHP thì sẽ bỏ trong `<? ?>` hoặc `<?php ?>`. Variables start with a `$` sign và the content of forms sent with a POST request can be accessed with the special `$_POST` variable.
+
+3. Điểm quan trọng khác của level này là, có thể include code từ 1 file khác vào bằng cách `include` or `require`.
+
+4. Tham khảo thêm về [PHP](https://www.w3schools.com/php/)
+
